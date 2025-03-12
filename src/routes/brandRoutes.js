@@ -6,16 +6,17 @@ import {
     getBrands,
     updateBrand
 } from '../controllers/brandController.js';
+import upload from '../middleware/multer.js';
 
 const router = express.Router();
 
 router.route('/')
-    .post(createBrand)
+    .post(upload, createBrand)
     .get(getBrands);
 
 router.route('/:id')
     .get(getBrandById)
-    .put(updateBrand)
+    .put(upload, updateBrand)
     .delete(deleteBrand);
 
 export default router;

@@ -14,7 +14,7 @@ const generateSubcategory = (categoryId) => {
 
 export const seedSubcategories = async (count, dependencyData) => {
   try {
-    const { categories } = dependencyData; // Now using lowercase key
+    const { categories } = dependencyData;
 
     if (!categories || categories.length === 0) {
       throw new Error("No categories found. Please seed categories first.");
@@ -37,7 +37,7 @@ export const seedSubcategories = async (count, dependencyData) => {
     console.log(`✅ Seeded ${subcategories.length} subcategories`);
     return subcategories;
   } catch (error) {
-    console.error("❌ Error seeding subcategories:", error.message);
+    console.error("❌ Error seeding subcategories:", error);
     throw error;
   }
 };

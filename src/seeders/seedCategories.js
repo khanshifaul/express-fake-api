@@ -1,38 +1,31 @@
-// seeders/seedCategories.js
-import { faker } from '@faker-js/faker';
-import Category from '../models/Category.js';
-import { handleInsertMany } from './seedUtils.js';
+import { faker } from "@faker-js/faker";
+import Category from "../models/Category.js";
+import { handleInsertMany } from "./seedUtils.js";
 
-const generateCategory = (existingNames) => {
-  let name;
-  do {
-    name = faker.commerce.department();
-  } while (existingNames.has(name));
-  
+// Define the generateCategory function
+const generateCategory = () => {
   return {
-    name,
-    logo: faker.image.url()
+    name: faker.commerce.department(),
+    logo: faker.image.url(),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.recent(),
   };
 };
 
 export const seedCategories = async (count) => {
   try {
     console.log(`🌱 Seeding ${count} categories...`);
-    const existingNames = new Set();
-    
+
+    // Generate unique categories
     const categories = await handleInsertMany(
       Category,
-      Array.from({ length: count }, () => {
-        const category = generateCategory(existingNames);
-        existingNames.add(category.name);
-        return category;
-      })
+      Array.from({ length: count }, () => generateCategory())
     );
 
-    console.log(`✅ Seeded ${categories?.length || 0} categories`);
-    return categories || [];
+    console.log(`✅ Seeded ${categories.length} categories`);
+    return categories;
   } catch (error) {
-    console.error('❌ Error seeding categories:', error.message);
-    return [];
+    console.error("❌ Error seeding categories:", error.message);
+    throw error;
   }
 };
